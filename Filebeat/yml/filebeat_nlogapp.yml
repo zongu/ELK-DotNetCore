@@ -1,0 +1,51 @@
+###################### Filebeat Configuration Example #########################
+
+# This file is an example configuration file highlighting only the most common
+# options. The filebeat.full.yml file from the same directory contains all the
+# supported options with more comments. You can use it as a reference.
+#
+# You can find the full configuration reference here:
+# https://www.elastic.co/guide/en/beats/filebeat/index.html
+
+#=========================== Filebeat prospectors =============================
+
+filebeat.prospectors:
+
+# Each - is a prospector. Most options can be set at the prospector level, so
+# you can use different prospectors for various configurations.
+# Below are the prospector specific configurations.
+
+filebeat.prospectors:
+
+- input_type: log
+  paths: /var/LogFiles/NLogApp/*.log
+  document_type: nlogapplog
+  multiline.pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+  multiline.negate: true
+  multiline.match: after
+
+#================================ General =====================================
+
+# Optional fields that you can specify to add additional information to the
+# output.
+fields:
+  env: nlogapp
+
+#================================ Outputs =====================================
+
+# Configure what outputs to use when sending the data collected by the beat.
+# Multiple outputs may be used.
+
+#----------------------------- Logstash output --------------------------------
+output.redis:
+  enable: true
+  hosts: ["redis"]
+  port: 6379
+  key: applog
+
+output.console:
+  # Boolean flag to enable or disable the output module.
+  enabled: false
+
+  # Pretty print json event
+  pretty: true
