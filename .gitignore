@@ -2,6 +2,7 @@
 # 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
 ################################################################################
 
+/.vs
+/NLogApp/bin/Debug/netcoreapp2.1
+/NLogApp/obj
 /NLogApp/.vs
-/NLogApp/NLogApp/bin/Debug/netcoreapp2.1
-/NLogApp/NLogApp/obj
