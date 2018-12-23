@@ -3,3 +3,5 @@
 ################################################################################
 
 /NLogApp/.vs
+/NLogApp/NLogApp/bin/Debug/netcoreapp2.1
+/NLogApp/NLogApp/obj
