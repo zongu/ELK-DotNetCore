@@ -18,7 +18,9 @@ namespace NLogApp.Controllers
         [HttpGet]
         public string Get()
         {
-            this.logger.LogInformation("ValuesController Get Api Invite");
+            this.logger.LogTrace("Trace::ValuesController Get Api Invite");
+            this.logger.LogInformation("Info::ValuesController Get Api Invite");
+            this.logger.LogError("Error::ValuesController Get Api Invite");
             return "ValuesController Get Api Invite";
         }
     }

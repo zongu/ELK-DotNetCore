@@ -47,8 +47,8 @@ docker run -d --name kibana \
 ## filebeat 
 docker run -d --name filebeat \
     -v ~/data/LogFiles:/var/LogFiles \
-    filebeat:CustomVersion \
     --net nlogapp \
+    filebeat:CustomVersion \
     /usr/share/filebeat/filebeat -e -c /yml/filebeat_nlogapp.yml
 
 ## nlogapp
