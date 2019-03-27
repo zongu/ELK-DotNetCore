@@ -1,0 +1,53 @@
+version: '3'
+services:
+  nlogapp:
+    container_name: nlogapp
+    image: nlogapp:CustomVersion
+    ports:
+      - "8080:80"
+    volumes:
+      - usr/LogFiles:/nlogapp/LogFiles
+    networks: 
+      - nlogapp
+  filebeat:
+    container_name: filebeat
+    image: filebeat:CustomVersion
+    volumes:
+      - usr/:/var/LogFiles
+    networks: 
+      - nlogapp
+    command: "/usr/share/filebeat/filebeat -e -c /yml/filebeat_nlogapp.yml"
+  redis:
+    container_name: redis
+    image: redis:3.2.4
+    ports:
+      - "6379:6379"
+    volumes:
+      - usr/data/redis:/data
+    networks: 
+      - nlogapp
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:5.6-alpine
+    volumes:
+      - usr/data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks: 
+      - nlogapp
+  logstash:
+    container_name: logstash
+    image: logstash:CustomVersion
+    networks: 
+      - nlogapp
+  kibana:
+    container_name: kibana
+    image: kibana:5.2.1
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+    networks: 
+      - nlogapp
+networks:
+  nlogapp:
