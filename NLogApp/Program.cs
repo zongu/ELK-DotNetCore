@@ -1,10 +1,10 @@
-﻿
+
 namespace NLogApp
 {
     using System.IO;
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using NLog.Web;
 
@@ -12,21 +12,23 @@ namespace NLogApp
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseKestrel()
-                .ConfigureLogging((hostContext, logging) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var env = hostContext.HostingEnvironment;
-                    var configuration = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: true)
-                        .Build();
-                    logging.AddConfiguration(configuration.GetSection("Logging"));
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging((hostContext, logging) =>
+                    {
+                        var env = hostContext.HostingEnvironment;
+                        var configuration = new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json", optional: true)
+                            .Build();
+                        logging.AddConfiguration(configuration.GetSection("Logging"));
+                    });
                 })
                 .UseNLog();
     }
